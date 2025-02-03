@@ -48,17 +48,16 @@ def extract_hit_sequences(blast_file, nuc_fasta, output_fasta):
             subject_record = nuc_records[subject_id]
             seq = subject_record.seq
 
-            # Determine the region to extract (adjust for 1-based indexing)
+            # Determine the region to extract 
             start = min(sstart, send)
             end = max(sstart, send)
             extracted_seq = seq[start - 1:end]
 
-            # If sstart > send then the alignment is on the minus strand,
-            # so take the reverse complement.
+          
             if sstart > send:
                 extracted_seq = extracted_seq.reverse_complement()
 
-            # Create a SeqRecord with a custom ID that includes coordinate info
+          
             record_id = f"{subject_id}_{sstart}_{send}"
             description = f"Hit from {query_id} extracted from {subject_id} positions {sstart} to {send}"
             extracted_record = SeqRecord(extracted_seq, id=record_id, description=description)

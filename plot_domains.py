@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from collections import defaultdict
 
-# Define your hmmscan output file
+
 hmmscan_file = "/home/snu/Desktop/proj_omkar/HMM/satb2_seq_domains.txt"  # Change this if your filename is different
 
 # Dictionary to store domain data {sequence_id: [(domain_name, start, end, color)]}
@@ -27,21 +27,17 @@ with open(hmmscan_file, "r") as f:
         if len(fields) < 19:  # Ensure we have enough columns
             continue
         
-        domain_name = fields[0]  # Example: CUTL, CUT, Homeodomain
-        query_name = fields[3]   # Query sequence ID (e.g., SATB2_HUMAN, SATB2_DANRE)
-        start = int(fields[15])  # Column "ali coord from"
-        end = int(fields[16])    # Column "ali coord to"
+        domain_name = fields[0]  
+        query_name = fields[3]   
+        start = int(fields[15])  
+        end = int(fields[16])   
         
-        # Set protein length dynamically
         protein_lengths[query_name] = max(protein_lengths.get(query_name, 0), end)
 
-        # Assign color based on domain type
-        color = domain_colors.get(domain_name, "gray")  # Default color: gray
+        color = domain_colors.get(domain_name, "gray")  
         
-        # Store domain details under the correct query sequence
         sequences[query_name].append((domain_name, start, end, color))
 
-# Generate plots for each sequence
 for query_name, domains in sequences.items():
     protein_length = protein_lengths[query_name]
 
@@ -65,6 +61,6 @@ for query_name, domains in sequences.items():
     plt.axis("off")
     plt.title(f"{query_name} Protein Domain Structure")
     
-    output_file = f"{query_name}_domains.png"  # Creates a filename based on query name
-    plt.savefig(output_file, dpi=300)  # Saves as a high-quality image
+    output_file = f"{query_name}_domains.png"  
+    plt.savefig(output_file, dpi=300)  
     plt.close()

@@ -10,7 +10,7 @@ output_file = "/home/snu/Desktop/proj_omkar/satb1_curated_tree/seq_satb1_curated
 with open(accession_file, 'r') as f:
     accession_ids = set(line.strip() for line in f)
 
-
+#All da different headers present in the original FASTA file
 # 1. XP_015910068.1 (starts with letters, followed by numbers and optional version)
 # 2. GFT99095.1 (starts with letters, followed by numbers and optional version)
 # 3. CAL1288737.1 (starts with letters, followed by numbers and optional version)
@@ -26,7 +26,7 @@ with open(output_file, 'w') as out_f:
         # Extract the accession ID from the header using the regex pattern
         match = accession_pattern.search(record.description)
         if match:
-            # The regex has 3 capturing groups, so we need to find the non-None group
+            # The regex has 3 capturing groups
             header_id = next((group for group in match.groups() if group), None)
             
             # Check if the extracted ID is in the set of accession IDs

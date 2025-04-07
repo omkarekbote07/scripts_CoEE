@@ -2,10 +2,8 @@
 from collections import Counter
 import pandas as pd
 
-# Load the uploaded file again
 fasta_path = "/DATA/proj_omkar/ens_orthos_NEW/clade-wise/satb1/satb1_combined_cladewise_aligned.fasta"
 
-# Parse FASTA file
 sequences = {}
 with open(fasta_path) as f:
     lines = f.read().splitlines()
@@ -61,17 +59,14 @@ for i in range(alignment_len):
         position_info["Num_Diff_Clades"] = len(unique_aas)
         position_differences.append(position_info)
 
-# Convert to DataFrame and preview
 clade_diff_df = pd.DataFrame(position_differences)
 clade_diff_df.head(10)
 
-# Convert to DataFrame and preview
 clade_diff_df = pd.DataFrame(position_differences)
 
 # Save the output to a CSV file
 output_path = "//DATA/proj_omkar/ens_orthos_NEW/clade-wise/satb1/satb1_cladewise_align_diff.csv"
 clade_diff_df.to_csv(output_path, index=False)
 
-# Optionally print a message to confirm the file was saved
 print(f"Output saved to {output_path}")
 

@@ -1,0 +1,37 @@
+import requests
+import pandas as pd
+
+# Read species list from file
+species_list = [line.strip() for line in open("/DATA/proj_omkar/july/old_seq_1/reptiles_hag_coel_scinames.txt")]
+
+results = []
+
+for sp in species_list:
+    try:
+        # Query GBIF API
+        response = requests.get(f"https://api.gbif.org/v1/species/match?name={sp}")
+        if response.status_code == 200:
+            data = response.json()
+            if data.get("matchType") == "EXACT":
+                row = {
+                    "InputName": sp,
+                    "MatchedName": data.get("scientificName", "N/A"),
+                    "Status": "Found",
+                    "Kingdom": data.get("kingdom", "N/A"),
+                    "Phylum": data.get("phylum", "N/A"),
+                    "Class": data.get("class", "N/A"),
+                    "Order": data.get("order", "N/A"),
+                    "Family": data.get("family", "N/A"),
+                    "Genus": data.get("genus", "N/A"),
+                    "Species": data.get("species", "N/A"),
+                }
+                results.append(row)
+            else:
+                results.append({"InputName": sp, "Status": "Not Found"})
+        else:
+            results.append({"InputName": sp, "Status": f"Error {response.status_code}"})
+    except Exception as e:
+        results.append({"InputName": sp, "Status": f"Error: {str(e)}"})
+
+# Save results to CSV
+pd.DataFrame(results).to_csv("/DATA/proj_omkar/july/old_seq_1/rep_hag_coel_tax.csv", index=False)
